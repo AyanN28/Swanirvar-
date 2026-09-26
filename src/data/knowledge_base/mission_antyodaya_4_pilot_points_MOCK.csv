@@ -1,0 +1,6 @@
+# metadata: category=geography, state=West Bengal, year=2025
+district,block,gp_name,panchayat_code,total_households,bank_branch_within_5km,all_weather_road_access,weekly_haat_present,broadband_csc_active
+Alipurduar,Falakata,Guabarbar,108234,2450,Yes,Yes,Yes,Yes
+Jalpaiguri,Malbazar,Damdim,109112,1890,Yes,Yes,Yes,Yes
+Cooch Behar,Dinhata,Bhatibari,110452,3100,Yes,Yes,Yes,Yes
+Darjeeling,Kurseong,Gayabari,111890,1420,No,Yes,Yes,Yes

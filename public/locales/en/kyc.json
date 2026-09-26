@@ -1,0 +1,15 @@
+{
+  "title": "KYC & Document Readiness Audit",
+  "documents": {
+    "aadhaar": "Aadhaar Card (UIDAI Verified)",
+    "pan": "PAN Card (Income Tax Dept)",
+    "udyam": "Udyam MSME Registration Certificate",
+    "ror": "Record of Rights (Khatian / RoR / Land Deed)",
+    "bank_statement": "6-Month Bank Account Statement",
+    "quotations": "Machinery / Equipment Quotations"
+  },
+  "mandatory": "Mandatory",
+  "optional": "Recommended",
+  "ready": "Ready for Bank Submission",
+  "pending": "Action Required"
+}

@@ -1,0 +1,5 @@
+{
+  "network_error": "Unable to connect to government server. Retrying with local cache.",
+  "location_error": "Could not acquire GPS fix. Please choose your district manually.",
+  "audio_error": "Voice speech recognition is unavailable. Please type your query."
+}

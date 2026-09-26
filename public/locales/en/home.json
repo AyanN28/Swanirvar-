@@ -1,0 +1,23 @@
+{
+  "greeting": "Namaste! Welcome to Swanirvar. I am your business elder Saathi.",
+  "hero_title": "From Local Village Evidence to a Bank-Ready Business",
+  "hero_subtitle": "Evaluate customer demand, competitor saturation, APMC mandi rates, and 40-page bank loan viability in your own voice.",
+  "voice_search_placeholder": "Ask in your language: 'Dukan check karo' or 'Chini ka mandi bhav'...",
+  "quick_actions": {
+    "feasibility": "7D Feasibility Radar",
+    "mandi": "e-NAM Live Mandis",
+    "loan": "10% Margin Calculator",
+    "dpr": "40-Page NABARD DPR",
+    "kyc": "KYC Document Audit",
+    "khata": "Voice Bol-Khata Ledger",
+    "training": "SAARTHI Lessons",
+    "gis": "15km Catchment Radar"
+  },
+  "how_it_works": {
+    "step1": "Pinpoint your village, haat or district centroid.",
+    "step2": "Scan real-time competitors, mandis, and supply chains via GIS.",
+    "step3": "Simulate customer footfall and seasonal monsoon cashflow dips.",
+    "step4": "Audit KYC documents and check PMEGP / Mudra subsidy match.",
+    "step5": "Download certified bank-ready Detailed Project Report (DPR)."
+  }
+}

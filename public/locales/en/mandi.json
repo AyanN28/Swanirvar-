@@ -1,0 +1,17 @@
+{
+  "title": "4-Tier APMC Mandi & Commodity Prices",
+  "subtitle": "Real-time rates from e-NAM, historical APMC indices, weekly haats, and VLE field surveys.",
+  "tiers": {
+    "tier1": "Tier 1 (e-NAM Live)",
+    "tier2": "Tier 2 (Historical APMC)",
+    "tier3": "Tier 3 (Interpolated Haat)",
+    "tier4": "Tier 4 (VLE Crowdsource)"
+  },
+  "metrics": {
+    "modal_price": "Modal Price",
+    "min_price": "Min Price",
+    "max_price": "Max Price",
+    "arrivals": "Arrivals Today",
+    "arbitrage": "Arbitrage Spread"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "7-Dimensional Business Feasibility Radar",
+  "subtitle": "Deterministic mathematical scoring based on catchment demand, competition, and debt service capacity.",
+  "score_label": "Overall 7D Score",
+  "bankable": "Bankable & Viable",
+  "moderate": "Conditional Approval",
+  "high_risk": "Requires Restructuring",
+  "dimensions": {
+    "market_opportunity": "Market Opportunity",
+    "customer_fit": "Customer Affordability",
+    "competition": "Competitor Moat",
+    "financials": "Financial Viability",
+    "supply_chain": "Input Supply Stability",
+    "regulatory": "Regulatory & Scheme Match",
+    "promoter_capability": "Promoter Capacity"
+  },
+  "swot": {
+    "strengths": "Strengths",
+    "weaknesses": "Weaknesses",
+    "opportunities": "Opportunities",
+    "threats": "Threats"
+  }
+}

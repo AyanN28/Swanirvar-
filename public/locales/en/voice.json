@@ -1,0 +1,7 @@
+{
+  "listening": "Listening in your language...",
+  "tap_to_speak": "Tap to speak your query",
+  "processing": "Analyzing business query...",
+  "mic_permission": "Please allow microphone access.",
+  "unrecognized": "I didn't catch that. Please speak slowly in Hindi, Bengali, or your preferred language."
+}

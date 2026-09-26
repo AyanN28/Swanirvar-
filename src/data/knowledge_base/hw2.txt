@@ -1,0 +1,30 @@
+---
+category: financial
+state: West Bengal
+year: 2025
+title: Financial Calculations, Project Costing & Break-Even Analysis Guide
+---
+
+# HW2 Financial Analysis Reference & Verification Matrix (West Bengal 2025)
+
+1. Margin Capital to Project Outlay Multiplier:
+   - Margin Capital: Promoter's available liquid equity (typically 10% for general rural enterprises, 5% for special categories).
+   - Base Multiplier: 10x available margin.
+   - Example: ₹14,000 margin yields ₹1,40,000 total project cost (Loan ₹1,26,000 @ 6.5% for 3 years with 3-month moratorium).
+   - Example: ₹1,00,000 margin yields ₹10,00,000 total project cost (Loan ₹9,00,000 @ 8.0% for 7 years with 6-month moratorium).
+
+2. Working Capital & Capital Expenditure (Capex) Allocation:
+   - Capex (Plant, Machinery & Tools): ~65% of Total Project Cost.
+   - Civil Works / Shed / Setup: ~15% of Total Project Cost.
+   - Working Capital (Raw materials, initial stock, wages): ~15% of Total Project Cost.
+   - Preliminary & Contingency: ~5% of Total Project Cost.
+
+3. EMI Calculation Post-Moratorium Formula:
+   - Monthly rate $r = \frac{\text{Annual Rate}}{12 \times 100}$
+   - Post-Moratorium Months $n = \text{Total Months} - \text{Moratorium Months}$
+   - $\text{EMI} = \frac{P \times r \times (1 + r)^n}{(1 + r)^n - 1}$
+
+4. West Bengal Regional Subsidies (2025):
+   - PMEGP West Bengal (DIC / KVIC): 35% Special Rural Subsidy, 25% General Rural Subsidy.
+   - Bangla Swanirbhar Karmasansthan Prakalpa (BSKP): Up to 30% state margin money assistance.
+   - PM SVANidhi: 7% interest subsidy on timely digital repayment.

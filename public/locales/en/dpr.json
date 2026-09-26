@@ -1,0 +1,12 @@
+{
+  "title": "Bank-Ready Detailed Project Report (DPR)",
+  "subtitle": "NABARD / SBI / PNB institutional format with multi-year cashflows, DSCR schedules, and subsidy calculations.",
+  "sections": {
+    "promoter": "Promoter & Enterprise Profile",
+    "market": "Catchment Feasibility & Marketing Plan",
+    "financials": "Capital Structure & Repayment Table",
+    "compliance": "Statutory & Environmental Approvals"
+  },
+  "generate_button": "Generate Bank-Ready PDF",
+  "downloading": "Compiling PDF with certified Unicode font..."
+}

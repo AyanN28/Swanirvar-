@@ -1,0 +1,63 @@
+{
+  "appName": "Swanirvar",
+  "tagline": "Local business intelligence for every citizen",
+  "nav": {
+    "home": "Home",
+    "analysis": "Business Analysis",
+    "location": "Live Location",
+    "mandi": "Mandi & Prices",
+    "seasonal": "Seasonal Calendar",
+    "alerts": "Stock Alerts",
+    "dpr": "DPR Studio",
+    "tools": "Tools",
+    "finance": "Finance & Schemes",
+    "help": "How to Use",
+    "dashboard": "Citizen Dashboard",
+    "khata": "Bol-Khata",
+    "training": "SAARTHI",
+    "advisor": "Swanirvar Saathi"
+  },
+  "actions": {
+    "generate": "Generate Report",
+    "calculate": "Calculate",
+    "refresh": "Refresh",
+    "explain": "Explain",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Yes",
+    "deny": "No",
+    "close": "Close",
+    "download": "Download",
+    "print": "Print / Save PDF",
+    "copy": "Copy",
+    "loading": "Loading…",
+    "retry": "Try again",
+    "listen": "Listen",
+    "speak": "Speak",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "view_more": "View More"
+  },
+  "voice": {
+    "speakNow": "Speak now",
+    "listening": "Listening…",
+    "tapToStop": "Tap the main button to stop",
+    "repeat": "Read again",
+    "slower": "Slower",
+    "louder": "Louder",
+    "notUnderstood": "I did not understand. Please say it again."
+  },
+  "a11y": {
+    "changeLanguage": "Change language",
+    "closeDialog": "Close dialog",
+    "openMenu": "Open menu"
+  },
+  "status": {
+    "loading": "Loading data...",
+    "syncing": "Syncing with live government registry...",
+    "verified": "Official Verified",
+    "active": "Active",
+    "live": "Live"
+  }
+}

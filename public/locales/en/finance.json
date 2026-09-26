@@ -1,0 +1,15 @@
+{
+  "title": "Deterministic Financial Engine",
+  "margin_capital": "Available Margin Capital (10%)",
+  "project_cost": "Total Feasible Project Cost",
+  "loan_amount": "Eligible Term / Working Capital Loan",
+  "rules": {
+    "micro": "Micro Finance Scheme (6.5% interest, 3-year tenor, 3-month moratorium)",
+    "term": "Standard Term Loan (8.0% interest, 7-year tenor, 6-month moratorium)"
+  },
+  "metrics": {
+    "dscr": "Debt Service Coverage Ratio (DSCR)",
+    "bep": "Break-Even Point (BEP)",
+    "irr": "Internal Rate of Return (IRR)"
+  }
+}

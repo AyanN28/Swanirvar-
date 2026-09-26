@@ -1,0 +1,23 @@
+{
+  "title": "Live Location & Spatial Ecosystem Scan",
+  "subtitle": "Interactive Leaflet.js map powered by real OpenStreetMap tiles, Nominatim reverse geocoding, and live Overpass POI queries.",
+  "radius": {
+    "5km": "5 km Primary Haat",
+    "10km": "10 km Wholesale Corridor",
+    "15km": "15 km Agri Hinterland"
+  },
+  "layers": {
+    "mandis": "APMC Mandis & Arbitrage",
+    "msme": "Udyam Registered MSME Clusters",
+    "banking": "Banking Nodes & CSP Kiosks",
+    "agri": "Agricultural & Farmgate Belts",
+    "competitors": "Competitor Stores"
+  },
+  "controls": {
+    "recenter": "Recenter Hub",
+    "layers": "Layers",
+    "fullscreen": "Fullscreen",
+    "fetch_gps": "Fetch Live GPS",
+    "scanning": "Scanning Spatial Mesh..."
+  }
+}

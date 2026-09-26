@@ -1,0 +1,15 @@
+{
+  "title": "Seasonal Agricultural & Demand Calendar",
+  "seasons": {
+    "kharif": "Kharif (Monsoon Sowing)",
+    "rabi": "Rabi (Winter Harvest)",
+    "zaid": "Zaid (Summer Cash Crops)"
+  },
+  "festivals": {
+    "diwali": "Diwali",
+    "chhath": "Chhath Puja",
+    "eid": "Eid",
+    "poush_parbon": "Poush Parbon / Makar Sankranti",
+    "durga_puja": "Durga Puja"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "app_name": "Swanirvar",
+  "app_tagline": "Hyper-Local Voice-First Business Advisory for Indian Micro-Entrepreneurs",
+  "nav": {
+    "home": "Home",
+    "dashboard": "Citizen Dashboard",
+    "location": "Live Location GIS",
+    "analysis": "Feasibility Report",
+    "mandi": "Mandi Rates",
+    "dpr": "DPR Studio",
+    "khata": "Bol-Khata",
+    "training": "SAARTHI",
+    "advisor": "Swanirvar Saathi"
+  },
+  "actions": {
+    "listen": "Listen",
+    "speak": "Speak",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "refresh": "Refresh",
+    "download": "Download",
+    "submit": "Submit",
+    "view_more": "View More",
+    "close": "Close"
+  }
+}
