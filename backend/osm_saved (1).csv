@@ -1,0 +1,101 @@
+from __future__ import annotations
+import base64
+import os
+import subprocess
+import tempfile
+from pathlib import Path
+import requests
+
+BASE = 'https://dhruva-api.bhashini.gov.in/services/inference/pipeline'
+
+def _token() -> str | None:
+    return os.getenv('BHASHINI_TOKEN') or os.getenv('BHASHINI_INFERENCE_API_KEY')
+
+def asr_configured() -> bool:
+    return bool(_token() and (os.getenv('BHASHINI_ASR_SERVICE_ID') or os.getenv('BHASHINI_ASR_SERVICE_ID_BN') or os.getenv('BHASHINI_ASR_SERVICE_ID_HI')))
+
+def tts_configured() -> bool:
+    return bool(_token() and (os.getenv('BHASHINI_TTS_SERVICE_ID') or os.getenv('BHASHINI_TTS_SERVICE_ID_BN') or os.getenv('BHASHINI_TTS_SERVICE_ID_HI')))
+
+def configured() -> bool:
+    return asr_configured() or tts_configured()
+
+def _service_id(task: str, language: str) -> str | None:
+    lang = (language or '').lower()
+    if task == 'asr':
+        return os.getenv(f'BHASHINI_ASR_SERVICE_ID_{lang.upper()}') or os.getenv('BHASHINI_ASR_SERVICE_ID')
+    return os.getenv(f'BHASHINI_TTS_SERVICE_ID_{lang.upper()}') or os.getenv('BHASHINI_TTS_SERVICE_ID')
+
+def _post(body):
+    token = _token()
+    if not token:
+        raise RuntimeError('Bhashini inference API key not configured')
+    r = requests.post(BASE, headers={'Authorization': token, 'Content-Type': 'application/json'}, json=body, timeout=60)
+    r.raise_for_status()
+    return r.json()
+
+def _to_wav16k_mono(audio_bytes: bytes, suffix: str = '.webm') -> bytes:
+    """Normalize browser-recorded audio to a Bhashini-friendly 16 kHz mono WAV."""
+    if not audio_bytes:
+        raise ValueError('Empty audio payload')
+    with tempfile.TemporaryDirectory() as td:
+        src = Path(td) / f'in{suffix}'
+        dst = Path(td) / 'out.wav'
+        src.write_bytes(audio_bytes)
+        cmd = [
+            'ffmpeg','-hide_banner','-loglevel','error','-y',
+            '-i',str(src),'-ac','1','-ar','16000','-c:a','pcm_s16le',str(dst)
+        ]
+        try:
+            subprocess.run(cmd, check=True, capture_output=True, timeout=30)
+        except FileNotFoundError:
+            raise RuntimeError('ffmpeg is required for cloud voice transcription. Install ffmpeg or use browser voice fallback.')
+        except subprocess.CalledProcessError as e:
+            err=(e.stderr or b'').decode(errors='ignore')
+            raise RuntimeError(f'Audio conversion failed: {err[-400:]}')
+        return dst.read_bytes()
+
+def asr(audio_bytes: bytes, language='hi', input_format='webm'):
+    sid = _service_id('asr', language)
+    if not sid:
+        raise RuntimeError('BHASHINI_ASR_SERVICE_ID not configured')
+    wav = _to_wav16k_mono(audio_bytes, '.wav' if input_format == 'wav' else '.webm')
+    body = {
+        'pipelineTasks': [{
+            'taskType':'asr',
+            'config':{
+                'language':{'sourceLanguage':language},
+                'serviceId':sid,
+                'audioFormat':'wav',
+                'samplingRate':16000,
+            }
+        }],
+        'inputData':{'audio':[{'audioContent':base64.b64encode(wav).decode()}]}
+    }
+    j=_post(body)
+    try:
+        text=j['pipelineResponse'][0]['output'][0].get('source','').strip()
+    except (KeyError,IndexError,TypeError) as e:
+        raise RuntimeError(f'Unexpected Bhashini ASR response: {e}')
+    return {'text':text,'language':language,'provider':'Bhashini'}
+
+def tts(text, language='hi'):
+    sid=_service_id('tts', language)
+    if not sid:
+        raise RuntimeError('BHASHINI_TTS_SERVICE_ID not configured')
+    body={
+        'pipelineTasks':[{
+            'taskType':'tts',
+            'config':{'language':{'sourceLanguage':language},'serviceId':sid}
+        }],
+        'inputData':{'input':[{'source':text}]}
+    }
+    j=_post(body)
+    try:
+        out=j['pipelineResponse'][0]['audio'][0]
+    except (KeyError,IndexError,TypeError) as e:
+        raise RuntimeError(f'Unexpected Bhashini TTS response: {e}')
+    data=out.get('audioContent') or out.get('audio')
+    if not data:
+        raise RuntimeError('Bhashini TTS returned no audio')
+    return {'audio_base64':data,'language':language,'provider':'Bhashini','mime_type':'audio/wav'}

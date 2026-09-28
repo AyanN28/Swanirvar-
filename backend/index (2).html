@@ -1,0 +1,141 @@
+from __future__ import annotations
+from typing import Any, Dict, Optional
+
+WEIGHTS = {"D1": .25, "D2": .20, "D3": .15, "D4": .10, "D5": .10, "D6": .10, "D7": .10}
+DIM_NAMES = {
+    "D1":"Demand-Supply Gap","D2":"Competition / Saturation","D3":"Customer Footfall / Reach",
+    "D4":"Local Taste / Cultural Fit","D5":"Customer Retention / Stickiness","D6":"Risk Assessment","D7":"Financial Viability",
+}
+D6_KEYS = ["environmental_weather","spoilage_cold_chain","informal_credit","supplier_reliability","competition","footfall","financial_evidence","seasonality"]
+
+def clamp(x: float, lo=0., hi=100.) -> float:
+    return max(lo, min(hi, float(x)))
+
+def d1_score(demand_kg: Optional[float], competitor_supply_kg: Optional[float]):
+    if demand_kg is None or competitor_supply_kg is None or demand_kg <= 0: return None
+    return clamp(max(0., (demand_kg-competitor_supply_kg)/demand_kg*100))
+
+def d2_score(comp: Optional[int], threshold: Optional[int]):
+    if comp is None or threshold is None or threshold <= 0: return None
+    return clamp(100 - min(100., comp/threshold*100))
+
+def d3_score(population: Optional[float], threshold=10000.):
+    if population is None or threshold <= 0: return None
+    return clamp(population/threshold*100)
+
+def d4_score(v): return None if v is None else clamp(v)
+
+def d5_score(occasions: Optional[float], target=30.):
+    if occasions is None or target <= 0: return None
+    return clamp(occasions/target*100)
+
+def d6_score(risks: Optional[Dict[str,float]]):
+    if not risks: return None
+    if any(k not in risks or risks[k] is None for k in D6_KEYS): return None
+    return clamp(100 - sum(clamp(risks[k]) for k in D6_KEYS)/len(D6_KEYS))
+
+def d7_calc(revenue, op_cost, bep, startup, debt):
+    vals=[revenue,op_cost,bep,startup,debt]
+    if any(v is None for v in vals) or revenue <= 0 or bep <= 0 or op_cost < 0 or startup < 0 or debt < 0:
+        return {"score":None,"bep_coverage_pct":None,"dscr":None,"startup_cost":startup,"monthly_surplus":None}
+    coverage=clamp(revenue/bep*100)
+    dscr=None if debt == 0 else max(0.,(revenue-op_cost)/debt)
+    return {"score":coverage,"bep_coverage_pct":coverage,"dscr":dscr,"startup_cost":startup,"monthly_surplus":revenue-op_cost}
+
+def tier(score):
+    if score is None: return {"code":"EVIDENCE_PENDING","label":"Complete required local evidence"}
+    if score >= 80: return {"code":"GREEN","label":"80–100"}
+    if score >= 60: return {"code":"YELLOW","label":"60–79"}
+    if score >= 40: return {"code":"ORANGE","label":"40–59"}
+    return {"code":"RED","label":"0–39"}
+
+
+def preliminary_decision(base: Dict[str,Any]):
+    """Return a truthful, non-canonical evidence summary for the live demo.
+
+    This uses only already accepted project signals: modelled catchment reach
+    and the documented D4/D5 prior/benchmark signals. It never invents D1, D2,
+    D6 or D7 values and never substitutes for the canonical 7D release gate.
+    """
+    reach = d3_score(base.get("catchment_population_5km"))
+    taste_prior = 80.0
+    retention_benchmark = 80.0
+    signals = {
+        "D3": {"score": reach, "basis": "MODELLED_CATCHMENT_REACH"},
+        "D4": {"score": taste_prior, "basis": "DOCUMENTED_PRIOR"},
+        "D5": {"score": retention_benchmark, "basis": "DOCUMENTED_BENCHMARK"},
+    }
+    weights = {k: WEIGHTS[k] for k in signals}
+    weighted = sum(signals[k]["score"] * weights[k] for k in signals if signals[k]["score"] is not None)
+    released_weight = sum(weights.values())
+    partial_index = round(weighted / released_weight, 2) if released_weight else None
+    return {
+        "status": "PRELIMINARY",
+        "label": "Current evidence conclusion",
+        "partial_index": partial_index,
+        "weighted_contribution": round(weighted, 2),
+        "released_weight_pct": round(released_weight * 100, 1),
+        "canonical_7d_score": None,
+        "canonical_release_ready": False,
+        "conclusion": (
+            "Current evidence shows a strong local reach signal and documented "
+            "prior/benchmark support for customer fit and retention. A definitive "
+            "Tea Shop feasibility conclusion is not yet supportable because "
+            "direct competitor verification, the remaining risk evidence and "
+            "business-specific financial inputs are still unresolved."
+        ),
+        "signals": signals,
+        "blockers": [
+            "D1 supplier/capacity evidence is not independently verified.",
+            "D2 direct-competitor count and saturation threshold are not fully verified.",
+            "D6 has 4 of 8 required risk evidence items verified.",
+            "D7 needs the five real business-specific financial inputs."
+        ],
+        "method_note": (
+            "The partial index is normalized over the three currently usable "
+            "signals only; it is NOT the canonical 7D score and must not be "
+            "presented as a final feasibility score."
+        )
+    }
+
+def evaluate(inputs: Dict[str,Any], base: Dict[str,Any]):
+    # Canonical mathematical scores only use released evidence.
+    # D3 is directly calculated from the stored catchment population.
+    # D4/D5 have documented prior/benchmark reference signals, but those
+    # references are intentionally NOT promoted to canonical scores.
+    s={
+      "D1": d1_score(base.get("annual_tea_demand_pool_5km_kg"),inputs.get("d1_competitor_supply_kg_year")),
+      "D2": d2_score(inputs.get("d2_direct_competitors"),inputs.get("d2_saturation_threshold")),
+      "D3": d3_score(base.get("catchment_population_5km")),
+      "D4": d4_score(inputs.get("d4_observed_taste_fit")),
+      "D5": d5_score(inputs.get("d5_monthly_purchase_occasions")),
+      "D6": d6_score(inputs.get("d6_risk_factors")),
+    }
+    d7=d7_calc(inputs.get("d7_projected_monthly_revenue"),inputs.get("d7_monthly_operating_cost"),inputs.get("d7_break_even_revenue"),inputs.get("d7_startup_cost"),inputs.get("d7_monthly_debt_service"))
+    s["D7"]=d7["score"]
+    final=round(sum(v*WEIGHTS[k] for k,v in s.items()),2) if all(v is not None for v in s.values()) else None
+    known=round(sum((v or 0)*WEIGHTS[k] for k,v in s.items() if v is not None),2)
+    statuses={k:("RELEASED" if v is not None else "BLOCKED") for k,v in s.items()}
+    statuses["D3"]="CALCULATED"
+    if s["D4"] is None: statuses["D4"]="PRELIMINARY"
+    if s["D5"] is None: statuses["D5"]="PRELIMINARY"
+    if s["D6"] is None and isinstance(base.get("risk_evidence_verified"), int) and base.get("risk_evidence_verified",0)>0:
+        statuses["D6"]="PARTIAL"
+    meta={
+      "D1":{"basis":"Requires independently verified local tea-shop capacity/supply evidence.","preview_score":None},
+      "D2":{"basis":"Requires independently verified direct-competitor count and a documented saturation threshold.","preview_score":None},
+      "D3":{"basis":"Calculated from 5 km modelled catchment population; not observed footfall.","preview_score":round(s["D3"],2) if s["D3"] is not None else None},
+      "D4":{"basis":"Documented prior only; not a verified observation.","preview_score":80.0 if s["D4"] is None else None},
+      "D5":{"basis":"Generic benchmark only; not an observed Gairkata retention measurement.","preview_score":80.0 if s["D5"] is None else None},
+      "D6":{"basis":f"{base.get('risk_evidence_verified',0)}/{8} required risk evidence items verified; deterministic score waits for complete risk evidence.","preview_score":None},
+      "D7":{"basis":"Requires five real business-specific financial inputs with provenance.","preview_score":None},
+    }
+    return {
+      "dimensions": {k:{"name":DIM_NAMES[k],"score":None if s[k] is None else round(s[k],2),"preview_score":meta[k]["preview_score"],"basis":meta[k]["basis"],"status":statuses[k],"weight":WEIGHTS[k],"released":s[k] is not None} for k in s},
+      "canonical_7d_score":final,
+      "release_ready":final is not None,
+      "tier":tier(final),
+      "known_weighted_contribution":known,
+      "d7_metrics":d7,
+      "rules":{"ai_can_modify_7d":False,"ml_can_modify_7d":False,"dl_can_modify_7d":False,"benchmark_substitution_allowed":False,"fabricated_data_allowed":False}
+    }

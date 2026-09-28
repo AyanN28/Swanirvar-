@@ -1,0 +1,120 @@
+{
+  "project": "Swanirvar",
+  "version": "1.1.2",
+  "pilot": {
+    "pilot_id": "WB_RURAL_01",
+    "location": "Gairkata",
+    "district": "Jalpaiguri",
+    "state": "West Bengal",
+    "business_type": "Tea Shop",
+    "coordinates": {
+      "lat": 26.7001,
+      "lon": 89.0251
+    }
+  },
+  "base_evidence": {
+    "population_2011": 7577,
+    "households_2011": 1749,
+    "catchment_population_5km": 46651.86,
+    "catchment_population_10km": 222037.92,
+    "annual_tea_demand_pool_5km_kg": 36481.75,
+    "mean_annual_rainfall_mm": 3356.9,
+    "mpce_monthly": 3815,
+    "languages": [
+      "Bengali",
+      "Hindi",
+      "English"
+    ],
+    "input_prices": {
+      "tea_loose_1kg": {
+        "price": 274.65,
+        "change_1y_pct": 4.41,
+        "source_label": "Saved PMD evidence"
+      },
+      "milk_1l": {
+        "price": 61.45,
+        "change_1y_pct": 4.7,
+        "source_label": "Saved PMD evidence"
+      },
+      "sugar_1kg": {
+        "price": 59.57,
+        "change_1y_pct": 28.94,
+        "source_label": "Saved PMD evidence"
+      }
+    },
+    "osm_saved": {
+      "verified_direct_tea_shops": 0,
+      "indirect_candidates": [
+        {
+          "name": "Litti Shop",
+          "osm_id": "12551125261",
+          "candidate_class": "INDIRECT_REVIEW"
+        }
+      ]
+    },
+    "risk_evidence_verified": 4,
+    "risk_evidence_total": 8,
+    "ml_dl": {
+      "cluster_id": 6,
+      "cluster_source": "PART 243 actual Census clustering",
+      "anomaly_status": "ANOMALY",
+      "isolation_score": -0.0349666598395939,
+      "anomaly_source": "PART 244 actual Isolation Forest",
+      "reconstruction_error": 0.0142278563268505,
+      "deep_learning_source": "PART 245 actual Census Autoencoder",
+      "top_error_features": [
+        "P_LIT",
+        "cultivator_share_pct",
+        "worker_rate_pct"
+      ]
+    }
+  },
+  "evidence_inputs": {
+    "d1_competitor_supply_kg_year": null,
+    "d2_direct_competitors": null,
+    "d2_saturation_threshold": null,
+    "d4_observed_taste_fit": null,
+    "d5_monthly_purchase_occasions": null,
+    "d6_risk_factors": null,
+    "d7_projected_monthly_revenue": null,
+    "d7_monthly_operating_cost": null,
+    "d7_break_even_revenue": null,
+    "d7_startup_cost": null,
+    "d7_monthly_debt_service": null,
+    "verification_note": "No local value is assumed as verified. Enter and confirm evidence through the user interface."
+  },
+  "demo_scope": {
+    "active_pilot": "WB_RURAL_01",
+    "active_label": "Gairkata, West Bengal — Tea Shop",
+    "coming_soon": [
+      {
+        "pilot_id": "TN_THR_01",
+        "label": "Thirumangalam, Tamil Nadu",
+        "status": "COMING_SOON"
+      },
+      {
+        "pilot_id": "MH_URA_01",
+        "label": "Urali Kanchan, Maharashtra",
+        "status": "COMING_SOON"
+      },
+      {
+        "pilot_id": "PB_CHA_01",
+        "label": "Chatha Nanhera, Punjab",
+        "status": "COMING_SOON"
+      }
+    ]
+  },
+  "business_success_model": {
+    "state": "COMING_SOON",
+    "reason": "A genuine verified labelled business-outcome dataset is required before training a business-success predictor.",
+    "primary_target": "survived_12m",
+    "positive_definition": "Verified business remained operational for at least 12 months.",
+    "negative_definition": "Verified business closed before completing 12 months.",
+    "secondary_targets": [
+      "profitable_3m",
+      "defaulted_12m"
+    ],
+    "leakage_rule": "Outcome/future fields must never be used as model features.",
+    "minimum_data_note": "Recommended starting point: hundreds of independently verified businesses with both outcome classes and group diversity; the model must pass held-out evaluation before demo use."
+  }
+}

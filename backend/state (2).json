@@ -1,0 +1,30 @@
+import os, uuid
+
+def configured(): return bool(os.getenv('GEMINI_API_KEY'))
+
+def _fallback(message, language='en'):
+    texts={
+        'bn':'সোয়ানির্ভর: AI এখনো সংযুক্ত নয়। নির্ধারক 7D ফলাফল এবং উৎস-লেবেলযুক্ত প্রমাণ পাওয়া যাচ্ছে।',
+        'hi':'स्वनिर्भर: AI अभी कनेक्ट नहीं है। निर्धारक 7D परिणाम और स्रोत-लेबल वाला प्रमाण उपलब्ध है।',
+        'en':'Swanirvar: AI is not connected. The deterministic 7D result and source-labelled evidence remain available.',
+    }
+    return {"interaction_id":str(uuid.uuid4()),"mode":"fallback","language":language,"text":texts.get(language,texts['en']),"can_modify_7d":False}
+
+
+def ask(message, language, context):
+    if not configured(): return _fallback(message,language)
+    try:
+        from google import genai
+        client=genai.Client(api_key=os.environ['GEMINI_API_KEY'])
+        prompt=("You are Swanirvar Sathi. Respond briefly and helpfully. Never invent local facts. "
+                "AI cannot modify the deterministic 7D score. Explain missing evidence clearly. "
+                f"Language={language}. Context={context}. User={message}")
+        model=os.getenv('GEMINI_MODEL','gemini-3.1-flash-lite')
+        resp=client.models.generate_content(model=model,contents=prompt)
+        return {"interaction_id":str(uuid.uuid4()),"mode":"gemini","language":language,"text":resp.text or "No answer returned.","can_modify_7d":False}
+    except Exception as e:
+        return {**_fallback(message,language),"error_type":type(e).__name__}
+
+def jury(payload, language='en'):
+    q='Assess evidence gaps and risks without changing the 7D mathematical scores. Return concise, source-labelled guidance.\n'+str(payload)
+    return ask(q,language,payload)

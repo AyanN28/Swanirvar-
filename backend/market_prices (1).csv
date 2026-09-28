@@ -1,0 +1,25 @@
+import os, requests
+
+def osm_candidates(lat: float, lon: float, radius_m: int = 5000):
+    url=os.getenv('OSM_OVERPASS_URL','https://overpass-api.de/api/interpreter')
+    radius=max(100,min(int(radius_m),15000))
+    q=f'''[out:json][timeout:20];(nwr[shop](around:{radius},{lat},{lon});nwr[amenity](around:{radius},{lat},{lon}););out center tags;'''
+    r=requests.post(url,data=q,timeout=25,headers={'User-Agent':'Swanirvar/1.1'})
+    r.raise_for_status()
+    out=[]
+    for e in r.json().get('elements',[]):
+        c=e.get('center',e); tags=e.get('tags',{})
+        name=tags.get('name') or tags.get('brand')
+        if not name: continue
+        out.append({'osm_id':e.get('id'),'type':e.get('type'),'name':name,'lat':c.get('lat'),'lon':c.get('lon'),'shop':tags.get('shop'),'amenity':tags.get('amenity')})
+    return {'source':'OpenStreetMap/Overpass','radius_m':radius,'count':len(out),'items':out}
+
+def route_distance(start_lat,start_lon,end_lat,end_lon,profile='driving'):
+    base=os.getenv('OSRM_URL','https://router.project-osrm.org').rstrip('/')
+    p='foot' if profile=='walking' else 'driving'
+    url=f'{base}/route/v1/{p}/{start_lon},{start_lat};{end_lon},{end_lat}'
+    r=requests.get(url,params={'overview':'false'},timeout=20,headers={'User-Agent':'Swanirvar/1.1'})
+    r.raise_for_status(); j=r.json()
+    if not j.get('routes'): return {'distance_km':None,'duration_min':None}
+    rt=j['routes'][0]
+    return {'distance_km':round(rt['distance']/1000,3),'duration_min':round(rt['duration']/60,1),'source':'OSRM'}

@@ -1,0 +1,7 @@
+{
+  "package": "Swanirvar_Backend_ONLY_v1.1.2_Baseline",
+  "source_artifact": "Swanirvar_AtoZ_FullStack_v1.1.2_Merged_PortalReady",
+  "frontend_included": false,
+  "backend_included": true,
+  "note": "Use the included Colab notebook to package the exact current backend from Drive."
+}

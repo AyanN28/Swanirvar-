@@ -1,0 +1,96 @@
+[
+  {
+    "id": "gemini",
+    "name": "Google Gemini",
+    "category": "AI Jury / Sathi",
+    "requires": [
+      "GEMINI_API_KEY"
+    ]
+  },
+  {
+    "id": "bhashini",
+    "name": "Bhashini / ULCA",
+    "category": "Indic ASR / TTS",
+    "requires": [
+      "BHASHINI_INFERENCE_API_KEY",
+      "BHASHINI_ASR_SERVICE_ID_BN / HI",
+      "BHASHINI_TTS_SERVICE_ID_BN / HI"
+    ]
+  },
+  {
+    "id": "osm",
+    "name": "OpenStreetMap + Overpass",
+    "category": "Local spatial evidence",
+    "requires": []
+  },
+  {
+    "id": "osrm",
+    "name": "OSRM",
+    "category": "Routing",
+    "requires": []
+  },
+  {
+    "id": "agmarknet",
+    "name": "Agmarknet / Data.gov.in",
+    "category": "Market price connector",
+    "requires": [
+      "DATA_GOV_API_KEY",
+      "AGMARKNET_URL"
+    ]
+  },
+  {
+    "id": "whatsapp",
+    "name": "WhatsApp Cloud API",
+    "category": "Notifications / documents",
+    "requires": [
+      "META_WHATSAPP_TOKEN",
+      "META_WHATSAPP_PHONE_NUMBER_ID"
+    ]
+  },
+  {
+    "id": "twilio",
+    "name": "Twilio SMS / Voice",
+    "category": "SMS / IVR / messaging",
+    "requires": [
+      "TWILIO_ACCOUNT_SID",
+      "TWILIO_AUTH_TOKEN"
+    ]
+  },
+  {
+    "id": "telegram",
+    "name": "Telegram Bot API",
+    "category": "Notifications / user interaction",
+    "requires": [
+      "TELEGRAM_BOT_TOKEN",
+      "TELEGRAM_CHAT_ID"
+    ]
+  },
+  {
+    "id": "digilocker",
+    "name": "DigiLocker",
+    "category": "Consent-based document access",
+    "requires": [
+      "DIGILOCKER_CLIENT_ID",
+      "DIGILOCKER_CLIENT_SECRET",
+      "DIGILOCKER_REDIRECT_URI"
+    ]
+  },
+  {
+    "id": "janparichay",
+    "name": "JanParichay",
+    "category": "Identity / SSO integration",
+    "requires": [
+      "JANPARICHAY_CLIENT_ID",
+      "JANPARICHAY_CLIENT_SECRET",
+      "JANPARICHAY_REDIRECT_URI"
+    ]
+  },
+  {
+    "id": "account_aggregator",
+    "name": "Account Aggregator",
+    "category": "Consent-based financial data",
+    "requires": [
+      "AUTHORISED_AA_CONFIGURATION"
+    ]
+  }
+]
